@@ -37,6 +37,13 @@ cd LuxTTS
 pip install -r requirements.txt
 ```
 
+`requirements.txt` avoids Git-based dependencies so installation works in
+offline or GitHub-restricted environments. If you specifically need the original
+LinaCodec package, install it separately when GitHub access is available:
+```bash
+pip install ".[linacodec]"
+```
+
 #### Load model:
 ```python
 from zipvoice.luxvoice import LuxTTS

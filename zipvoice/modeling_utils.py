@@ -1,5 +1,7 @@
 import argparse
 import datetime as dt
+import importlib
+import importlib.util
 import json
 import logging
 import os
@@ -25,9 +27,24 @@ from zipvoice.utils.infer import rms_norm
 from dataclasses import dataclass, field
 from typing import Optional, List
 
-from linacodec.vocoder.vocos import Vocos
 from zipvoice.onnx_modeling import OnnxModel
 from torch.nn.utils import parametrize
+
+
+def get_vocos_class():
+    has_linacodec = importlib.util.find_spec("linacodec") is not None
+    if has_linacodec and importlib.util.find_spec("linacodec.vocoder.vocos") is not None:
+        return importlib.import_module("linacodec.vocoder.vocos").Vocos
+
+    if importlib.util.find_spec("vocos") is not None:
+        return importlib.import_module("vocos").Vocos
+
+    raise RuntimeError(
+        "LuxTTS requires a Vocos implementation. Install dependencies with "
+        "`pip install -r requirements.txt`. For the original LinaCodec vocoder, "
+        "install the optional dependency with `pip install '.[linacodec]'` in an "
+        "environment that can access GitHub."
+    )
 
 
 @dataclass
@@ -116,6 +133,7 @@ def load_models_gpu(model_path=None, device="cuda"):
     model = model.to(params.device).eval()
     feature_extractor = VocosFbank()
 
+    Vocos = get_vocos_class()
     vocos = Vocos.from_hparams(f'{model_path}/vocoder/config.yaml').to(device)
     parametrize.remove_parametrizations(vocos.upsampler.upsample_layers[0], "weight")
     parametrize.remove_parametrizations(vocos.upsampler.upsample_layers[1], "weight")
