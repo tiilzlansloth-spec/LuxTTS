@@ -164,7 +164,6 @@ def load_models_cpu(model_path=None, num_thread=2):
 
     model = OnnxModel(text_encoder_path, fm_decoder_path, num_thread=num_thread)
 
-    Vocos = get_vocos_class()
     vocos = Vocos.from_hparams(f"{model_path}/vocoder/config.yaml").eval()
     parametrize.remove_parametrizations(vocos.upsampler.upsample_layers[0], "weight")
     parametrize.remove_parametrizations(vocos.upsampler.upsample_layers[1], "weight")
