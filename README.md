@@ -37,6 +37,13 @@ cd LuxTTS
 pip install -r requirements.txt
 ```
 
+`requirements.txt` avoids Git-based dependencies so installation works in
+offline or GitHub-restricted environments. If you specifically need the original
+LinaCodec package, install it separately when GitHub access is available:
+```bash
+pip install ".[linacodec]"
+```
+
 #### Load model:
 ```python
 from zipvoice.luxvoice import LuxTTS
@@ -75,6 +82,16 @@ sf.write('output.wav', final_wav, 48000)
 if display is not None:
   display(Audio(final_wav, rate=48000))
 ```
+
+#### Web app
+Run the local LuxTTS Studio web interface:
+```bash
+python -m zipvoice.web_app
+```
+
+Then open http://127.0.0.1:7860 in your browser. The app lets you upload or record
+a reference voice, enter text, tune sampling settings, and play the generated
+speech directly in the browser.
 
 #### Inference with sampling params:
 ```python
