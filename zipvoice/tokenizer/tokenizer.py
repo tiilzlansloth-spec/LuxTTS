@@ -33,10 +33,10 @@ try:
     from piper_phonemize import phonemize_espeak
 except Exception as ex:
     raise RuntimeError(
-        f"{ex}\nPlease run\n"
-        "pip install piper_phonemize -f \
-            https://k2-fsa.github.io/icefall/piper_phonemize.html"
-    )
+        f"{ex}\nPlease install LuxTTS with Python 3.10, 3.11, or 3.12, then run:\n"
+        "pip install piper_phonemize -f "
+        "https://k2-fsa.github.io/icefall/piper_phonemize.html"
+    ) from ex
 
 jieba.default_logger.setLevel(logging.INFO)
 
