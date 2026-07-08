@@ -124,18 +124,19 @@ def load_models_gpu(model_path=None, device="cuda"):
     params.sampling_rate = model_config["feature"]["sampling_rate"]
     return model, feature_extractor, vocos, tokenizer, transcriber
 
-def load_models_cpu(model_path = None, num_thread=2):
+def load_models_cpu(model_path=None, num_thread=2):
     params = LuxTTSConfig()
     params.seed = 42
 
-    model_path = snapshot_download('YatharthS/LuxTTS')
+    if model_path is None:
+        model_path = snapshot_download("YatharthS/LuxTTS")
 
     token_file = f"{model_path}/tokens.txt"
     text_encoder_path = f"{model_path}/text_encoder.onnx"
     fm_decoder_path = f"{model_path}/fm_decoder.onnx"
-    model_config  = f"{model_path}/config.json"
+    model_config = f"{model_path}/config.json"
 
-    transcriber = pipeline("automatic-speech-recognition", model="openai/whisper-tiny", device='cpu')
+    transcriber = pipeline("automatic-speech-recognition", model="openai/whisper-tiny", device="cpu")
 
     tokenizer = EmiliaTokenizer(token_file=token_file)
     tokenizer_config = {"vocab_size": tokenizer.vocab_size, "pad_id": tokenizer.pad_id}
@@ -145,10 +146,10 @@ def load_models_cpu(model_path = None, num_thread=2):
 
     model = OnnxModel(text_encoder_path, fm_decoder_path, num_thread=num_thread)
 
-    vocos = Vocos.from_hparams(f'{model_path}/vocoder/config.yaml').eval()
+    vocos = Vocos.from_hparams(f"{model_path}/vocoder/config.yaml").eval()
     parametrize.remove_parametrizations(vocos.upsampler.upsample_layers[0], "weight")
     parametrize.remove_parametrizations(vocos.upsampler.upsample_layers[1], "weight")
-    vocos.load_state_dict(torch.load(f'{model_path}/vocoder/vocos.bin', map_location=torch.device('cpu')))
+    vocos.load_state_dict(torch.load(f"{model_path}/vocoder/vocos.bin", map_location=torch.device("cpu")))
 
     feature_extractor = VocosFbank()
 

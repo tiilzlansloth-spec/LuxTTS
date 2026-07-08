@@ -7,6 +7,7 @@ requires-python = ">=3.10"
 dependencies = [
   "cn2an",
   "huggingface-hub",
+  "gradio",
   "inflect",
   "jieba",
   "lhotse",

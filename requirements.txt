@@ -23,3 +23,5 @@ jieba
 piper_phonemize
 pypinyin
 setuptools<81
+gradio
+
