@@ -7,11 +7,11 @@ requires-python = ">=3.10"
 dependencies = [
   "cn2an",
   "huggingface-hub",
+  "gradio",
   "inflect",
   "jieba",
   "lhotse",
   "librosa",
-  "linacodec",
   "numpy",
   "onnxruntime",
   "piper-phonemize",
@@ -30,6 +30,9 @@ dependencies = [
 train = [
   "einops",
 ]
+linacodec = [
+  "linacodec @ git+https://github.com/ysharma3501/LinaCodec.git",
+]
 
 [build-system]
 requires = ["uv_build>=0.9.6,<0.10.0"]
@@ -40,9 +43,6 @@ line-length = 120
 
 [tool.uv]
 find-links = ["https://k2-fsa.github.io/icefall/piper_phonemize.html"]
-
-[tool.uv.sources]
-linacodec = { git = "https://github.com/ysharma3501/LinaCodec.git" }
 
 [tool.uv.build-backend]
 module-root = "" # The root module of the project
