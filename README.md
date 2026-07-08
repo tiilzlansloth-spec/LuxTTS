@@ -31,9 +31,16 @@ You can try it locally, colab, or spaces.
 [![Open in Spaces](https://huggingface.co/datasets/huggingface/badges/resolve/main/open-in-hf-spaces-sm.svg)](https://huggingface.co/spaces/YatharthS/LuxTTS)
 
 #### Simple installation:
-```
+LuxTTS depends on `piper_phonemize`, which publishes prebuilt wheels for Python
+3.10-3.12. If you see `No matching distribution found for piper_phonemize`
+or pip ignores NumPy versions because they require another Python version, create
+your virtual environment with Python 3.10, 3.11, or 3.12 and reinstall:
+```bash
 git clone https://github.com/ysharma3501/LuxTTS.git
 cd LuxTTS
+python3.12 -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
